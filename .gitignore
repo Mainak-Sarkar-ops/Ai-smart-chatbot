@@ -1,0 +1,23 @@
+# React
+**/node_modules/
+**/dist/
+**/build/
+
+# Spring Boot
+**/target/
+*.class
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+#vscode 
+.vscode/
+
+# Sensitive configuration files
+AIAgent/demo/password.java
+AIAgent/demo/src/main/resources/application.properties

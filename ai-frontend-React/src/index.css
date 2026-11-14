@@ -1,0 +1,926 @@
+/* =========================================
+   GLOBAL
+========================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  background: #05070d;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+/* =========================================
+   ANIMATED BACKGROUND
+========================================= */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(0, 140, 255, 0.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(140, 0, 255, 0.12),
+      transparent 30%
+    );
+
+  pointer-events: none;
+  z-index: -1;
+}
+
+
+/* =========================================
+   MAIN APP
+========================================= */
+
+.app {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background: rgba(5, 7, 13, 0.95);
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+  width: 280px;
+  height: 100vh;
+
+  background: rgba(10, 13, 22, 0.85);
+
+  backdrop-filter: blur(20px);
+
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+
+  padding: 22px;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow:
+    10px 0 40px rgba(0, 0, 0, 0.4);
+}
+
+
+/* =========================================
+   AI LOGO
+========================================= */
+
+.sidebar h2 {
+  margin: 0 0 25px;
+
+  font-size: 22px;
+
+  letter-spacing: 0.5px;
+
+  background: linear-gradient(
+    90deg,
+    #00c6ff,
+    #7b61ff,
+    #c850ff
+  );
+
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================
+   NEW CHAT BUTTON
+========================================= */
+
+.new-chat-btn {
+  width: 100%;
+
+  padding: 13px 15px;
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(0, 200, 255, 0.3);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0, 160, 255, 0.15),
+      rgba(120, 0, 255, 0.15)
+    );
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+
+  box-shadow:
+    0 0 20px rgba(0, 150, 255, 0.08);
+}
+
+
+.new-chat-btn:hover {
+
+  transform: translateY(-2px);
+
+  border-color: #00c6ff;
+
+  box-shadow:
+    0 0 20px rgba(0, 198, 255, 0.25);
+}
+
+
+/* =========================================
+   CHAT HISTORY TITLE
+========================================= */
+
+.sidebar h3 {
+
+  margin-top: 30px;
+
+  margin-bottom: 12px;
+
+  color: #6f7a91;
+
+  font-size: 11px;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================
+   HISTORY CONTAINER
+========================================= */
+
+.history {
+
+  flex: 1;
+
+  overflow-y: auto;
+
+  padding-right: 5px;
+}
+
+
+/* SCROLLBAR */
+
+.history::-webkit-scrollbar,
+.chat-box::-webkit-scrollbar {
+
+  width: 5px;
+
+}
+
+
+.history::-webkit-scrollbar-thumb,
+.chat-box::-webkit-scrollbar-thumb {
+
+  background: #27314a;
+
+  border-radius: 10px;
+
+}
+
+
+/* =========================================
+   HISTORY ITEM
+========================================= */
+
+.history-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 8px;
+
+  padding: 11px 12px;
+
+  margin-bottom: 6px;
+
+  border-radius: 10px;
+
+  color: #aab3c7;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+
+  border: 1px solid transparent;
+}
+
+
+.history-item:hover {
+
+  background: rgba(255, 255, 255, 0.04);
+
+  color: white;
+
+  border-color:
+    rgba(255, 255, 255, 0.06);
+
+}
+
+
+/* ACTIVE CHAT */
+
+.history-item.active {
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 160, 255, 0.15),
+      rgba(100, 0, 255, 0.08)
+    );
+
+  border:
+    1px solid rgba(0, 180, 255, 0.25);
+
+  color: #ffffff;
+
+  box-shadow:
+    inset 3px 0 0 #00c6ff;
+}
+
+
+.history-item span {
+
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   DELETE BUTTON
+========================================= */
+
+.delete-btn {
+
+  background: transparent;
+
+  border: none;
+
+  color: #586176;
+
+  cursor: pointer;
+
+  font-size: 13px;
+
+  transition: 0.2s;
+
+}
+
+
+.delete-btn:hover {
+
+  color: #ff4d6d;
+
+  transform: scale(1.15);
+
+}
+
+
+/* =========================================
+   EMPTY HISTORY
+========================================= */
+
+.no-history {
+
+  color: #4e576c;
+
+  font-size: 13px;
+
+  text-align: center;
+
+  margin-top: 30px;
+}
+
+
+/* =========================================
+   MAIN AREA
+========================================= */
+
+.main {
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  height: 100vh;
+
+  position: relative;
+
+  padding: 25px 40px;
+
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.main h1 {
+
+  text-align: center;
+
+  font-size: 22px;
+
+  margin: 5px 0 20px;
+
+  letter-spacing: 0.5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff,
+      #9ccfff,
+      #bd9cff
+    );
+
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+}
+
+
+/* =========================================
+   ONLINE STATUS
+========================================= */
+
+.main h1::after {
+
+  content: " ● ONLINE";
+
+  font-size: 9px;
+
+  vertical-align: middle;
+
+  margin-left: 10px;
+
+  letter-spacing: 1.5px;
+
+  color: #00e676;
+
+  -webkit-text-fill-color: #00e676;
+
+}
+
+
+/* =========================================
+   CHAT BOX
+========================================= */
+
+.chat-box {
+
+  flex: 1;
+
+  overflow-y: auto;
+
+  padding: 25px 8%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.message {
+
+  padding: 13px 17px;
+
+  border-radius: 16px;
+
+  max-width: 70%;
+
+  line-height: 1.6;
+
+  font-size: 14px;
+
+  word-wrap: break-word;
+
+  animation: messageAppear 0.3s ease;
+
+  position: relative;
+
+}
+
+
+/* MESSAGE ANIMATION */
+
+@keyframes messageAppear {
+
+  from {
+
+    opacity: 0;
+
+    transform: translateY(8px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+  }
+
+}
+
+
+/* =========================================
+   USER MESSAGE
+========================================= */
+
+.message.user {
+
+  align-self: flex-end;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0066ff,
+      #7146ff
+    );
+
+  color: white;
+
+  border-bottom-right-radius: 5px;
+
+  box-shadow:
+    0 8px 25px rgba(0, 100, 255, 0.2);
+}
+
+
+/* =========================================
+   AI MESSAGE
+========================================= */
+
+.message.ai {
+
+  align-self: flex-start;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(22, 28, 42, 0.95),
+      rgba(14, 18, 29, 0.95)
+    );
+
+  border:
+
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  color: #dbe3f4;
+
+  border-bottom-left-radius: 5px;
+
+  box-shadow:
+    0 8px 25px
+    rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================
+   WELCOME SCREEN
+========================================= */
+
+.welcome {
+
+  margin: auto;
+
+  text-align: center;
+
+  color: #677187;
+
+  animation: welcomeFloat 4s ease-in-out infinite;
+
+}
+
+
+.welcome h2 {
+
+  font-size: 32px;
+
+  margin-bottom: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00c6ff,
+      #8b5cf6
+    );
+
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+}
+
+
+.welcome p {
+
+  font-size: 14px;
+
+}
+
+
+/* =========================================
+   INPUT AREA
+========================================= */
+
+.input-area {
+
+  display: flex;
+
+  gap: 12px;
+
+  padding:
+
+    12px
+
+    15px;
+
+  margin:
+
+    10px auto
+
+    5px;
+
+  width: 85%;
+
+  background:
+
+    rgba(15, 19, 30, 0.85);
+
+  backdrop-filter:
+
+    blur(20px);
+
+  border:
+
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 18px;
+
+  box-shadow:
+
+    0 10px 40px
+    rgba(0, 0, 0, 0.35);
+
+}
+
+
+/* =========================================
+   TEXTAREA
+========================================= */
+
+textarea {
+
+  flex: 1;
+
+  resize: none;
+
+  padding: 13px;
+
+  border-radius: 12px;
+
+  border:
+
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  background:
+
+    rgba(5, 8, 15, 0.8);
+
+  color: white;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition: 0.3s;
+
+}
+
+
+textarea:focus {
+
+  border-color:
+
+    rgba(0, 198, 255, 0.5);
+
+  box-shadow:
+
+    0 0 15px
+    rgba(0, 198, 255, 0.08);
+
+}
+
+
+textarea::placeholder {
+
+  color: #596276;
+
+}
+
+
+/* =========================================
+   SEND BUTTON
+========================================= */
+
+.input-area button {
+
+  align-self: flex-end;
+
+  padding:
+
+    12px
+
+    20px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #007bff,
+      #743cff
+    );
+
+  color: white;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+
+  box-shadow:
+
+    0 5px 20px
+    rgba(70, 80, 255, 0.25);
+
+}
+
+
+.input-area button:hover {
+
+  transform:
+
+    translateY(-2px)
+
+    scale(1.03);
+
+  box-shadow:
+
+    0 8px 30px
+    rgba(70, 100, 255, 0.4);
+
+}
+
+
+.input-area button:active {
+
+  transform: scale(0.97);
+
+}
+
+
+.input-area button:disabled {
+
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
+
+}
+
+
+/* =========================================
+   TYPING INDICATOR
+========================================= */
+
+.typing-indicator {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #7f8ba3 !important;
+
+}
+
+
+.dots {
+
+  display: inline-flex;
+
+}
+
+
+.dots span {
+
+  font-size: 18px;
+
+  animation:
+
+    typingDot
+
+    1.4s infinite;
+
+}
+
+
+.dots span:nth-child(2) {
+
+  animation-delay:
+
+    0.2s;
+
+}
+
+
+.dots span:nth-child(3) {
+
+  animation-delay:
+
+    0.4s;
+
+}
+
+
+@keyframes typingDot {
+
+  0% {
+
+    opacity: 0.2;
+
+    transform: translateY(0);
+
+  }
+
+  30% {
+
+    opacity: 1;
+
+    transform: translateY(-3px);
+
+  }
+
+  60% {
+
+    opacity: 0.2;
+
+    transform: translateY(0);
+
+  }
+
+}
+
+
+/* =========================================
+   WELCOME ANIMATION
+========================================= */
+
+@keyframes welcomeFloat {
+
+  0%,
+
+  100% {
+
+    transform: translateY(0);
+
+  }
+
+  50% {
+
+    transform: translateY(-6px);
+
+  }
+
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 800px) {
+
+  .sidebar {
+
+    width: 220px;
+
+  }
+
+  .main {
+
+    padding:
+
+      20px;
+
+  }
+
+  .chat-box {
+
+    padding:
+
+      20px;
+
+  }
+
+  .message {
+
+    max-width: 85%;
+
+  }
+
+  .input-area {
+
+    width: 100%;
+
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .sidebar {
+
+    display: none;
+
+  }
+
+  .main {
+
+    padding:
+
+      15px;
+
+  }
+
+  .chat-box {
+
+    padding:
+
+      15px 5px;
+
+  }
+
+  .message {
+
+    max-width: 90%;
+
+  }
+
+}
+
+
